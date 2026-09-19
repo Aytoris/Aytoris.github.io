@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.lrpg.lrpg",
+      "sha256_cert_fingerprints": [
+        "6B:24:01:66:69:85:B1:A7:85:7B:EF:CB:02:20:DD:58:3A:F4:AA:7D:8C:2C:A7:98:26:31:8B:2D:CA:61:B5:F0"
+      ]
+    }
+  }
+]
