@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Join an LRPG adventure</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: #f6f1e7; color: #2a2118; display: flex; min-height: 100vh;
+         align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; }
+  @media (prefers-color-scheme: dark) { body { background: #1e1a16; color: #efe6d6; } }
+  .card { max-width: 420px; width: 100%; text-align: center; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  .code { font-size: 2.2rem; letter-spacing: 0.35em; font-weight: 700; margin: 16px 0;
+          padding: 12px 0 12px 0.35em; border: 2px dashed currentColor; border-radius: 12px; }
+  .btn { display: inline-block; margin: 8px 6px; padding: 12px 22px; border-radius: 999px;
+         background: #7a4dd6; color: #fff; text-decoration: none; font-weight: 600; }
+  .btn.secondary { background: transparent; border: 2px solid currentColor; color: inherit; }
+  .muted { opacity: 0.75; font-size: 0.95rem; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>You are invited to an adventure</h1>
+  <p class="muted">Open LRPG and join with this code:</p>
+  <div class="code" id="code">······</div>
+  <p>
+    <a class="btn" id="open" href="#">Open in LRPG</a>
+    <a class="btn secondary" id="copy" href="#">Copy code</a>
+  </p>
+  <p class="muted" id="noapp">Don't have the app yet? Ask the friend who sent this for the APK, install it, then tap the link again.</p>
+  <p class="muted hidden" id="nocode">This link carries no join code. Ask your friend to share it again from the adventure page.</p>
+</div>
+<script>
+  (function () {
+    var params = new URLSearchParams(location.search);
+    var raw = params.get('c') || params.get('code') || '';
+    // …/join/CODE (path form) as a fallback
+    if (!raw) {
+      var m = location.pathname.match(/\/join\/([A-Za-z0-9]{6})\/?$/);
+      if (m) raw = m[1];
+    }
+    var code = raw.trim().toUpperCase();
+    var ok = /^[A-HJ-NP-Z2-9]{6}$/.test(code);
+    var codeEl = document.getElementById('code');
+    var openEl = document.getElementById('open');
+    var copyEl = document.getElementById('copy');
+    if (!ok) {
+      codeEl.textContent = '——————';
+      openEl.classList.add('hidden');
+      copyEl.classList.add('hidden');
+      document.getElementById('noapp').classList.add('hidden');
+      document.getElementById('nocode').classList.remove('hidden');
+      return;
+    }
+    codeEl.textContent = code;
+    // Android: an intent:// URL opens the app when installed and falls back
+    // to this same page (S.browser_fallback_url) when it is not. Elsewhere,
+    // the plain scheme link.
+    var here = location.href.split('#')[0];
+    var intent = 'intent://join/' + code + '#Intent;scheme=lrpg;package=com.lrpg.lrpg;' +
+                 'S.browser_fallback_url=' + encodeURIComponent(here + '#noapp') + ';end';
+    var isAndroid = /android/i.test(navigator.userAgent);
+    openEl.href = isAndroid ? intent : ('lrpg://join/' + code);
+    copyEl.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(code).then(function () { copyEl.textContent = 'Copied'; });
+      }
+    });
+    // A verified App Link never shows this page on Android; if we are here
+    // with the app installed, the intent button is the way in. Try it once
+    // automatically so a tap on the link is enough.
+    if (isAndroid && location.hash !== '#noapp') {
+      setTimeout(function () { location.href = intent; }, 400);
+    }
+  })();
+</script>
+</body>
+</html>

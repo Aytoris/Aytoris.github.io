@@ -5,7 +5,8 @@
       "namespace": "android_app",
       "package_name": "com.lrpg.lrpg",
       "sha256_cert_fingerprints": [
-        "6B:24:01:66:69:85:B1:A7:85:7B:EF:CB:02:20:DD:58:3A:F4:AA:7D:8C:2C:A7:98:26:31:8B:2D:CA:61:B5:F0"
+        "6B:24:01:66:69:85:B1:A7:85:7B:EF:CB:02:20:DD:58:3A:F4:AA:7D:8C:2C:A7:98:26:31:8B:2D:CA:61:B5:F0",
+        "57:A4:BC:6D:E7:6F:E2:E3:FD:69:1F:C9:B8:75:DA:15:D8:36:96:30:76:89:4B:22:EC:D7:C7:18:A9:38:D8:F7"
       ]
     }
   }

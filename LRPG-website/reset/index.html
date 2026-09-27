@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reset your LRPG password</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { margin: 0; font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: #f6f1e7; color: #2a2118; display: flex; min-height: 100vh;
+         align-items: center; justify-content: center; padding: 24px; box-sizing: border-box; }
+  @media (prefers-color-scheme: dark) { body { background: #1e1a16; color: #efe6d6; } }
+  .card { max-width: 420px; width: 100%; text-align: center; }
+  h1 { font-size: 1.4rem; margin: 0 0 8px; }
+  .btn { display: inline-block; margin: 8px 6px; padding: 12px 22px; border-radius: 999px;
+         background: #7a4dd6; color: #fff; text-decoration: none; font-weight: 600; }
+  .muted { opacity: 0.75; font-size: 0.95rem; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1 id="title">Set a new password</h1>
+  <p class="muted" id="lead">Open LRPG to choose your new password.</p>
+  <p><a class="btn" id="open" href="#">Open in LRPG</a></p>
+  <p class="muted" id="same">Open this link on the phone where you asked for the reset: the app on that phone holds the other half of the key.</p>
+  <p class="muted hidden" id="err"></p>
+</div>
+<script>
+  (function () {
+    // Supabase's /verify redirects here with ?code=… (PKCE, supabase_flutter's
+    // default) or, on failure, ?error=…&error_description=… (sometimes in the
+    // #fragment). A verified App Link never shows this page on Android; the
+    // app's own deep-link handling exchanges the code (PasswordRecovery).
+    var q = new URLSearchParams(location.search);
+    var h = new URLSearchParams(location.hash.replace(/^#/, ''));
+    var errText = q.get('error_description') || h.get('error_description') ||
+                  q.get('error') || h.get('error');
+    var openEl = document.getElementById('open');
+    if (errText || !q.get('code')) {
+      document.getElementById('title').textContent = 'This reset link did not work';
+      document.getElementById('lead').textContent =
+        'It may have expired or been used already. In LRPG, tap "Forgot password?" again to get a new one.';
+      var e = document.getElementById('err');
+      if (errText) { e.textContent = errText.replace(/\+/g, ' '); e.classList.remove('hidden'); }
+      openEl.classList.add('hidden');
+      document.getElementById('same').classList.add('hidden');
+      return;
+    }
+    var query = 'code=' + encodeURIComponent(q.get('code'));
+    var here = location.href.split('#')[0];
+    var intent = 'intent://reset?' + query + '#Intent;scheme=lrpg;package=com.lrpg.lrpg;' +
+                 'S.browser_fallback_url=' + encodeURIComponent(here + '#noapp') + ';end';
+    var isAndroid = /android/i.test(navigator.userAgent);
+    openEl.href = isAndroid ? intent : ('lrpg://reset?' + query);
+    if (isAndroid && location.hash !== '#noapp') {
+      setTimeout(function () { location.href = intent; }, 400);
+    }
+  })();
+</script>
+</body>
+</html>

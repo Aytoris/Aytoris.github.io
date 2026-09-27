@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LRPG Privacy</title>
+<!-- The same text as the in-app page, lib/features/auth/presentation/screens/
+     privacy_screen.dart: keep the two in step. The contact address is a
+     placeholder until the owner fills it in (lib/core/constants/app_info.dart). -->
+<style>
+  :root { color-scheme: light dark; --bg: #f6f1e7; --fg: #2a2118; --accent: #7a4dd6; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #1e1a16; --fg: #efe6d6; --accent: #b79cf0; } }
+  body { margin: 0; font: 16px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+         background: var(--bg); color: var(--fg); padding: 24px 16px; }
+  main { max-width: 640px; margin: 0 auto; }
+  h1 { font-size: 1.6rem; margin: 0 0 8px; }
+  h2 { font-size: 1.15rem; margin: 28px 0 8px; color: var(--accent); }
+  ul { padding-left: 20px; margin: 0; }
+  li { margin-bottom: 6px; }
+  .muted { opacity: 0.75; }
+</style>
+</head>
+<body>
+<main>
+  <h1>LRPG privacy</h1>
+  <p class="muted">LRPG is a small open beta run by one person for friends. This page says, plainly, what the app keeps and where it goes.</p>
+
+  <h2>What LRPG stores about you</h2>
+  <ul>
+    <li>Your account: email address and password (the password is stored only as a hash by our login provider, Supabase).</li>
+    <li>Your profile: username, native language, the languages you learn and your levels, "I play as" (he / she), your time zone offset, your progress (XP, streaks, items).</li>
+    <li>What you write in the game: your replies and side-chat messages, and their evaluations (scores, corrections, dice results).</li>
+    <li>Your vocabulary: the words you tap or save and your review history (when you reviewed a word and how well you knew it).</li>
+    <li>Your phone's push token, so the game can tell you when it is your turn.</li>
+  </ul>
+
+  <h2>Who else receives some of it</h2>
+  <ul>
+    <li>Google Gemini writes the story and evaluates your replies. It receives the texts you write, the story so far and what it needs to adapt the game to you (languages, levels, your character). It does not receive your email address or password.</li>
+    <li>Firebase (Google) delivers push notifications and collects crash reports. It receives your push token, the notification text and, when the app crashes, a technical report tied to your account id (never your email or your texts).</li>
+    <li>Supabase hosts the database and the login.</li>
+    <li>If you sign in with Google, Google tells us your email address.</li>
+    <li>Nothing is sold or used for advertising.</li>
+  </ul>
+
+  <h2>How long it is kept</h2>
+  <ul>
+    <li>Until you delete your account: Settings &gt; Delete account. That removes your account, profile, vocabulary, review history and push tokens at once, and makes you leave the adventures you are in.</li>
+    <li>The lines you wrote in an adventure you shared with friends stay in their story so it still makes sense, but they are no longer linked to any account.</li>
+  </ul>
+
+  <h2>Contact</h2>
+  <ul>
+    <li>Questions, or a request about your data: <a href="mailto:noximilien360@gmail.com">noximilien360@gmail.com</a></li>
+  </ul>
+</main>
+</body>
+</html>
